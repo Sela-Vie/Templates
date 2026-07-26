@@ -1,22 +1,25 @@
 #!/bin/bash
 set -e
 
-# this script uses the tmux terminal multiplexer 
-# to keep a terminal session alive for the program
-# and for user monitoring
-# for ease of use, just change SETUP and COMMANDS
 # ===============================================
 # SETUP
 # ===============================================
 
 SESSION_NAME="templates"
-DIR="$HOME/git/templates"
+SCRIPT_NAME="script.sh"
+
+# ===============================================
+
+script_path="${BASH_SOURCE[0]}"
+script_dir=$(dirname -- "$script_path")
+script_dir_m0="$(cd "$script_dir" && pwd)"
+script_dir_m1="$(cd "$script_dir/.." && pwd)"
 
 # ===============================================
 # FUNCTIONS
 # ===============================================
-LOG="$DIR/autostart/${SESSION_NAME}.log"
-exec > >(tee -a "$LOG") 2>&1
+LOG="$script_path.log"
+exec 2>>"$LOG"
 
 # wont stop if tmux session notif already exists
 tmux new -d -s "$SESSION_NAME" || true		
@@ -29,5 +32,5 @@ tmux_send_keys(){
 # COMMANDS
 # ===============================================
 
-tmux_send_keys "cd $DIR"
-tmux_send_keys "python3 main.py "
+tmux_send_keys "cd ~"
+tmux_send_keys "bash $script_dir_m0/$SCRIPT_NAME"
