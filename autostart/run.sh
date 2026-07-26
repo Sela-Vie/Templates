@@ -5,21 +5,23 @@ set -e
 # SETUP
 # ===============================================
 
+absolute_file_path="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/$(basename -- "${BASH_SOURCE[0]}")"
+absolute_folder_path_m0=$(dirname -- "$absolute_file_path")
+absolute_folder_path_m1="$(cd "$absolute_folder_path_m0/.." && pwd)"
+
+LOG="$absolute_file_path.log"
+exec 2>>"$LOG"
+
+# ===============================================
+# CUSTOM VARS
+# ===============================================
+
 SESSION_NAME="templates"
 SCRIPT_NAME="script.sh"
 
 # ===============================================
-
-script_path="${BASH_SOURCE[0]}"
-script_dir=$(dirname -- "$script_path")
-script_dir_m0="$(cd "$script_dir" && pwd)"
-script_dir_m1="$(cd "$script_dir/.." && pwd)"
-
-# ===============================================
 # FUNCTIONS
-# ===============================================
-LOG="$script_path.log"
-exec 2>>"$LOG"
+# ===============================================]
 
 # wont stop if tmux session notif already exists
 tmux new -d -s "$SESSION_NAME" || true		
@@ -29,8 +31,8 @@ tmux_send_keys(){
 }
 
 # ===============================================
-# COMMANDS
+# SCRIPT
 # ===============================================
 
 tmux_send_keys "cd ~"
-tmux_send_keys "bash $script_dir_m0/$SCRIPT_NAME"
+tmux_send_keys "bash $absolute_folder_path_m0/$SCRIPT_NAME"
