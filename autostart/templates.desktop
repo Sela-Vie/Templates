@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
 Name=template
-Exec=sh -c '~/git/templates/autostart/templates.sh'
-Terminal=false
+Exec=
+TryExec=
 
+Terminal=false
 GenericName=test file
 StartupNotify=false
-TryExec=
