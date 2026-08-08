@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Name=template
+Name=notif
 Exec=
 TryExec=
 
 Terminal=false
-GenericName=test file
+GenericName=custom application - notif
 StartupNotify=false

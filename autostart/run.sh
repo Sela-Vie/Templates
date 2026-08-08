@@ -9,30 +9,28 @@ absolute_file_path="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/$(basena
 absolute_folder_path_m0=$(dirname -- "$absolute_file_path")
 absolute_folder_path_m1="$(cd "$absolute_folder_path_m0/.." && pwd)"
 
+source "~/.bashrc"
+source "$absolute_folder_path_m0/vars.sh"
 LOG="$absolute_file_path.log"
 exec 2>>"$LOG"
 
 # ===============================================
-# CUSTOM VARS
-# ===============================================
-
-SESSION_NAME="templates"
-SCRIPT_NAME="script.sh"
-
-# ===============================================
 # FUNCTIONS
-# ===============================================]
+# ===============================================
 
-# wont stop if tmux session notif already exists
+# || true prevent errors from stopping the program
 tmux new -d -s "$SESSION_NAME" || true		
 tmux_send_keys(){
 	local command_string=$1
-	tmux send-keys -t "$SESSION_NAME" "$command_string" C-m
+	tmux send-keys -t "$SESSION_NAME" "$command_string 2>> $LOG" C-m
 }
 
 # ===============================================
-# SCRIPT
+# COMMANDS
 # ===============================================
 
-tmux_send_keys "cd ~"
-tmux_send_keys "bash $absolute_folder_path_m0/$SCRIPT_NAME"
+echo $(date -Iseconds) 1>> $LOG
+tmux_send_keys "cd $absolute_folder_path_m1"
+tmux_send_keys "python3 main.py"
+tmux_send_keys "python3 bane.py"
+# example for error loggin
